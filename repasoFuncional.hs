@@ -40,11 +40,33 @@ cuantosCumplen :: [a] -> (a -> Bool) -> Int
 cuantosCumplen lista f = length (filter f lista)
 ---------------------------------------------------------------
  
--- Aplicacion parcial
-
 fraude :: Int -> Resultado -> Resultado
 fraude n (UnResultado p v d) = UnResultado p (n*v) d
 
 fraudeGeneral :: Int -> [Resultado] -> [Resultado]
 fraudeGeneral n res = map (fraude n) res
+
+----------------------------------------------------------
+
+esVpara :: Int -> (Int -> Bool) -> Bool
+esVpara x f = f x
+
+--cuantosCumplen (esVpara 3) [even, odd, 5>]
+
+
+--Composicion de funciones
+-- h(x) = f o g (x)   se compone poniendo "." (punto)
+
+sig x = x+1
+cuad x = x * x
+
+poli x = (sig.cuad) x -- es equivalente a poner. poli x = sig (cuad x)
+
+filtrarMayores n = ((n<).sig.cuad) [3,5,1,0]
+
+
+-- usamos composicion en totalVotos
+
+totalVotosC :: [Resultado] -> Partido -> Int
+totalVotosC r p = (sum . map votos . filter ((p==).partido)) r
 
